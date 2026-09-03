@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Waste Management Dashboard</title>
+
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+html,body{
+ width:100%;
+ height:100vh;
+ margin:0;
+ background:linear-gradient(135deg,#04145b,#045372,#0d8aa4);
+}
+
+body{
+ padding:1.2vh 1.2vw;
+ overflow:hidden;
+ display:flex;
+}
+
+.dashboard{
+ width:100%;
+ height:100%;
+ margin:auto;
+ border:2px solid rgba(255,255,255,.2);
+ border-radius:25px;
+ padding:1.2vh 1.2vw;
+ display:flex;
+ flex-direction:column;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    align-items:center;
+    gap:1.5vw;
+    margin-bottom:1.2vh;
+}
+
+.logo-box{
+    width:16vw;
+    max-width:280px;
+    height:9vh;
+    max-height:100px;
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.logo-box img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.title{
+    color:white;
+    font-size:clamp(24px, 3.4vw, 55px);
+    font-weight:900;
+}
+
+/* DATE */
+
+.date-row{
+    margin-bottom:1.2vh;
+    color:white;
+    font-size:clamp(16px, 1.6vw, 26px);
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+}
+
+.date-row input{
+    width:250px;
+    max-width:20vw;
+    height:5vh;
+    max-height:42px;
+    border:none;
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:clamp(14px, 1.1vw, 18px);
+    margin-left:8px;
+}
+
+/* MAIN CONTENT */
+
+.main-content{
+ display:grid;
+ grid-template-columns:55% 45%;
+ gap:1.2vw;
+ flex:1;
+ min-height:0;
+}
+/* WASTE SIDE */
+
+.waste-section{
+    display:flex;
+    flex-direction:column;
+    gap:1.2vh;
+    height:100%;
+    min-height:0;
+}
+
+.card{
+    padding:0.6vh 0.8vw;
+    border-radius:16px;
+    color:white;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+    flex:1;
+    min-height:0;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:0.4vh;
+}
+
+.card-title{
+    font-size:clamp(12px, 1.3vw, 20px);
+    font-weight:700;
+    line-height:1.1;
+    flex-shrink:0;
+}
+
+.input-row{
+    position:relative;
+    flex:1;
+    min-height:0;
+    display:flex;
+}
+
+.input-row input{
+    width:100%;
+    height:100%;
+    min-height:0;
+    border:none;
+    border-radius:10px;
+    padding:0 75px 0 15px;
+    font-size:clamp(14px, 1.4vw, 22px);
+    font-weight:700;
+}
+
+.unit{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:clamp(14px, 1.2vw, 20px);
+    color:#444;
+    font-weight:900;
+}
+
+/* COLORS */
+
+.dry{
+    background:#9C6B30;
+}
+
+.wet{
+    background:#22B14C;
+}
+
+.ewaste{
+    background:#2E86FF;
+}
+
+.plastic{
+    background:#E6B800;
+}
+
+.recyclable{
+    background:#00B894;
+}
+
+.hazardous{
+    background:#E53935;
+}
+
+/* CHART */
+
+.chart-panel{
+ background:white;
+ border-radius:20px;
+ padding:1.2vh 1.2vw;
+ display:flex;
+ flex-direction:column;
+ height:100%;
+ min-height:0;
+}
+
+
+.chart-title{
+    text-align:center;
+    font-size:clamp(18px, 2vw, 28px);
+    font-weight:800;
+    margin-bottom:1vh;
+    flex-shrink:0;
+}
+
+.chart-container{
+    flex:1;
+    min-height:0;
+    position:relative;
+}
+
+/* TOTAL */
+
+.total-section{
+    margin-top:1.2vh;
+    background:white;
+    border-radius:18px;
+    padding:1.6vh 1.6vw;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.total-title{
+    font-size:clamp(16px, 2vw, 28px);
+    font-weight:900;
+}
+
+.total-value{
+    font-size:clamp(22px, 3vw, 42px);
+    font-weight:900;
+    color:#003c96;
+}
+
+
+/* Portrait / narrow fallback (phones, small windows) */
+@media (max-aspect-ratio: 4/3), (max-width: 1100px){
+
+    body{
+        overflow-y:auto;
+        overflow-x:hidden;
+        display:block;
+    }
+
+    .dashboard{
+        height:auto;
+        min-height:100%;
+    }
+
+    .main-content{
+        grid-template-columns:1fr;
+        flex:none;
+    }
+
+    .chart-container{
+        height:360px;
+    }
+
+    .waste-section{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+        height:auto;
+    }
+
+    .card{
+        flex:none;
+    }
+
+    .total-section{
+        margin-top:8px;
+    }
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<script>
+/* Fix for TV / embedded browsers that miscalculate 100vh
+   (report a taller viewport than what's actually visible),
+   which was pushing the chart legend and total bar off-screen. */
+function setRealAppHeight(){
+    var h = window.innerHeight;
+    document.documentElement.style.height = h + 'px';
+    document.body.style.height = h + 'px';
+}
+setRealAppHeight();
+window.addEventListener('resize', setRealAppHeight);
+window.addEventListener('orientationchange', function(){
+    setTimeout(setRealAppHeight, 200);
+});
+</script>
+
+<div class="dashboard">
+
+    <div class="header">
+
+        <div class="logo-box">
+<img
+src="https://tse4.mm.bing.net/th/id/OIP.CZtmhzTvTCNsBeAWZ7BhigHaEK?r=0&w=1536&h=864&rs=1&pid=ImgDetMain&o=7&rm=3"
+alt="Logo">
+</div>
+
+        <div class="title">
+            WASTE MANAGEMENT
+        </div>
+
+    </div>
+
+    <div class="date-row">
+        Date :
+        <input type="text" placeholder="Enter Date">
+    </div>
+
+    <div class="main-content">
+
+        <div class="waste-section">
+
+            <div class="card dry">
+                <div class="card-title">🟤 Dry Waste</div>
+                <div class="input-row">
+                    <input type="number" class="wasteInput">
+                    <span class="unit">KG</span>
+                </div>
+            </div>
+
+            <div class="card wet">
+                <div class="card-title">🟢 Wet Waste</div>
+                <div class="input-row">
+                    <input type="number" class="wasteInput">
+                    <span class="unit">KG</span>
+                </div>
+            </div>
+
+            <div class="card ewaste">
+                <div class="card-title">🔵 E-Waste</div>
+                <div class="input-row">
+                    <input type="number" class="wasteInput">
+                    <span class="unit">KG</span>
+                </div>
+            </div>
+
+            <div class="card plastic">
+                <div class="card-title">🟡 Plastic Waste</div>
+                <div class="input-row">
+                    <input type="number" class="wasteInput">
+                    <span class="unit">KG</span>
+                </div>
+            </div>
+
+            <div class="card recyclable">
+                <div class="card-title">♻ Food Waste</div>
+                <div class="input-row">
+                    <input type="number" class="wasteInput">
+                    <span class="unit">KG</span>
+                </div>
+            </div>
+
+            <div class="card hazardous">
+                <div class="card-title">🔴 Hazardous Waste</div>
+                <div class="input-row">
+                    <input type="number" class="wasteInput">
+                    <span class="unit">KG</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="chart-panel">
+
+            <div class="chart-title">
+                Waste Distribution
+            </div>
+
+            <div class="chart-container">
+                <canvas id="pieChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="total-section">
+
+        <div class="total-title">
+            TOTAL WASTE GENERATED TODAY
+        </div>
+
+        <div id="totalWaste" class="total-value">
+            0 KG
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const wasteInputs = document.querySelectorAll('.wasteInput');
+const totalWasteElement = document.getElementById('totalWaste');
+
+/* Custom plugin: draws each label OUTSIDE the pie with a short
+   dotted leader line connecting it back to its slice, instead of
+   cramming text inside small slices where it overlaps. */
+const outsideLabelsPlugin = {
+    id: 'outsideLabels',
+    afterDraw(chart){
+
+        const meta = chart.getDatasetMeta(0);
+        if(!meta || !meta.data.length) return;
+
+        const dataValues = chart.data.datasets[0].data;
+        const total = dataValues.reduce((a,b)=>a+b,0);
+        if(total === 0) return;
+
+        const ctx = chart.ctx;
+        const chartArea = chart.chartArea;
+        const fontSize = Math.max(
+            12,
+            Math.min(18, chartArea.width / 34)
+        );
+
+        ctx.save();
+
+        meta.data.forEach((arc, i) => {
+
+            const value = dataValues[i];
+            if(!value) return;
+
+            const angle = (arc.startAngle + arc.endAngle) / 2;
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+
+            const cx = arc.x;
+            const cy = arc.y;
+            const outerR = arc.outerRadius;
+
+            /* point on the slice edge where the line starts */
+            const startX = cx + outerR * cos;
+            const startY = cy + outerR * sin;
+
+            /* elbow point, a bit further out */
+            const elbowR = outerR + 18;
+            const elbowX = cx + elbowR * cos;
+            const elbowY = cy + elbowR * sin;
+
+            /* final label point, pushed further horizontally */
+            const isRight = cos >= 0;
+            const labelX = elbowX + (isRight ? 26 : -26);
+            const labelY = elbowY;
+
+            /* dotted leader line */
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(elbowX, elbowY);
+            ctx.lineTo(labelX, labelY);
+            ctx.setLineDash([3, 3]);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            /* small dot at the slice edge */
+            ctx.beginPath();
+            ctx.arc(startX, startY, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,0,0,0.55)';
+            ctx.fill();
+
+            /* label text */
+            const percentage = ((value / total) * 100).toFixed(1);
+            const text = value + ' KG (' + percentage + '%)';
+
+            ctx.font = '700 ' + fontSize + 'px Segoe UI, sans-serif';
+            ctx.fillStyle = '#222';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = isRight ? 'left' : 'right';
+            ctx.fillText(text, labelX + (isRight ? 4 : -4), labelY);
+        });
+
+        ctx.restore();
+    }
+};
+
+Chart.register(outsideLabelsPlugin);
+
+const pieChart = new Chart(
+    document.getElementById('pieChart'),
+    {
+        type: 'pie',
+
+        data: {
+            labels: [
+                'Dry Waste',
+                'Wet Waste',
+                'E-Waste',
+                'Plastic Waste',
+                'Food Waste',
+                'Hazardous Waste'
+            ],
+
+            datasets: [{
+                data: [0, 0, 0, 0, 0, 0],
+
+                backgroundColor: [
+                    '#9C6B30',
+                    '#22B14C',
+                    '#2E86FF',
+                    '#E6B800',
+                    '#00B894',
+                    '#E53935'
+                ],
+
+                borderColor: '#fff',
+                borderWidth: 3
+            }]
+        },
+
+        
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+
+            devicePixelRatio: 3,
+
+
+            plugins: {
+
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        }
+                    }
+                },
+
+                datalabels: {
+                    display: false
+                }
+            },
+
+            layout: {
+                padding: {
+                    top: 30,
+                    bottom: 30,
+                    left: 70,
+                    right: 70
+                }
+            }
+        }
+    }
+);
+
+function updateDashboard() {
+
+    let values = [];
+    let total = 0;
+
+    wasteInputs.forEach(input => {
+
+        const value =
+            parseFloat(input.value) || 0;
+
+        values.push(value);
+
+        total += value;
+    });
+
+    totalWasteElement.textContent =
+        total.toFixed(2) + ' KG';
+
+    pieChart.data.datasets[0].data =
+        values;
+
+    pieChart.update();
+}
+
+wasteInputs.forEach(input => {
+
+    input.addEventListener(
+        'input',
+        updateDashboard
+    );
+
+});
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
